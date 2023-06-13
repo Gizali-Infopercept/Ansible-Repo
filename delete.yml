@@ -1,0 +1,9 @@
+---
+- name: delete file
+  become: true
+  tasks:
+
+  - name: delete file
+    file:
+      path: /home/ubuntu/delete.txt
+      state: absent
