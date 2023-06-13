@@ -7,4 +7,4 @@
   - name: delete file
     file:
       path: /home/ubuntu/delete.txt
-      state: absent
+      state: present
