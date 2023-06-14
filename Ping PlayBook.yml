@@ -5,5 +5,5 @@
   tasks:
     - name: Test connection
       ping:
-      become: yes
+      become_method: runas
       connection: local
