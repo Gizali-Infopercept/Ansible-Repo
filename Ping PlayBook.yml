@@ -1,0 +1,11 @@
+---
+- name: Ping remote host
+  hosts: 172.17.16.97
+  gather_facts: no
+  tasks:
+    - name: Test connection
+      ping:
+      become: yes
+      connection: local
+      vars:
+        ansible_become_pass: "{{ become_password }}"
