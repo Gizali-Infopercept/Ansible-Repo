@@ -1,6 +1,6 @@
 ---
 - name: Ping remote host
-  hosts: MyPC
+  hosts: 172.17.16.97
   gather_facts: no
   tasks:
     - name: Test connection
