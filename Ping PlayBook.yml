@@ -1,9 +1,7 @@
 ---
 - name: Ping remote host
-  hosts: 172.17.16.97
+  hosts: all
   gather_facts: no
   tasks:
     - name: Test connection
-      ping:
-      become_method: runas
-      connection: local
+      win_ping:
