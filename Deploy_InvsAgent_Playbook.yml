@@ -1,0 +1,42 @@
+---
+- name: Installation of Invinsense Single Agent v4
+  hosts: all
+  gather_facts: false
+
+  tasks:
+  - name: Creating a Directory
+    ansible.windows.win_file:
+         path: C:\Users\Public\Down
+         state: directory
+  - name: Cloning IvsAgent (.msi) file
+    ansible.windows.win_shell: |
+      git clone http://172.17.14.49:31080/harshb/IvsAgent.git
+    args:
+      chdir: C:\Users\Public\Downloads
+      executable: cmd
+
+  - name: Installing Single Agent
+    ansible.windows.win_shell: |
+      msiexec.exe /i InvinSetup.msi /l*v install.log WAZUH_MANAGER="172.17.16.81" WAZUH_REGISTRATION_SERVER="172.17.16.81" WAZUH_AGENT_GROUP="default" WAZUH_REGISTRATION_TYPE="NONE" SKIP_ENDPOINT_DECEPTION="y"
+    args:
+      chdir: C:\Users\Public\Downloads\IvsAgent
+      executable: cmd
+  - name: Modify ossec.conf - Wazuh manager IP
+    ansible.windows.win_shell: |
+        (Get-Content -Path 'C:\Program Files (x86)\ossec-agent\ossec.conf') -replace '<address>.*</address>', "<address>{{ wazuh_manager_ip }}</address>" | Set-Content -Path 'C:\Program Files (x86)\ossec-agent\ossec.conf'
+    vars:
+      wazuh_manager_ip: '172.17.16.81'
+  - name: Modify ossec.conf - Wazuh registration IP
+    ansible.windows.win_shell: |
+        (Get-Content -Path 'C:\Program Files (x86)\ossec-agent\ossec.conf') -replace '<registration_server>.*</registration_server>', "<registration_server>{{ wazuh_registration_ip }}</registration_server>" | Set-Content -Path 'C:\Program Files (x86)\ossec-agent\ossec.conf'
+    vars:
+      wazuh_registration_ip: '172.17.16.81'
+  - name: Starting Single-Agent Service
+    ansible.windows.win_service:
+      name: Wazuh
+      state: restarted
+  - name: ReStarting Single-Agent Service
+    ansible.windows.win_service:
+      name: IvsAgent
+      start_mode: auto
+      state: restarted
