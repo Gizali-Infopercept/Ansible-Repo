@@ -3,6 +3,8 @@
 connect('weblogic', 'P@$$w0rd', '172.17.11.58:7001')
 
 # Start an edit session
+edit()
+
 startEdit()
 
 # Navigate to the desired MBean location
