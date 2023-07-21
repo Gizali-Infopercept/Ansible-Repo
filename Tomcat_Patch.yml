@@ -3,10 +3,6 @@
   hosts: all
   gather_facts: no
   tasks:
-    - name: copy file
-      win_copy:
-        src: /home/ubuntu/script.ps1
-        dest: C:\script.ps1
     - name: Run PowerShell script to get Tomcat path
       win_shell: |
                 & 'C:\script.ps1' -PortNumber '{{ PortNumber }}'
