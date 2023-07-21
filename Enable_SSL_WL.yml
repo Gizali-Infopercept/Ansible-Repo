@@ -5,7 +5,7 @@
   tasks:
 
     - name: Copy Script file
-      win_shell: git clone https://github.com/harshb-icpl/IBM-WAS.git
+      win_shell: https://github.com/gizalig-icpl/Ansible-Repo.git
       args:
         chdir: C:\
         executable: cmd
@@ -13,7 +13,7 @@
     
     - name: Copy a single file where the source is on the remote host
       ansible.windows.win_copy:
-        src: C:\IBM-WAS\Enable_SSL_WL.py
+        src: C:\Ansible-Repo\Enable_SSL_WL.py
         dest: C:\Oracle\Middleware\Oracle_Home\user_projects\domains\base_domain\bin\Enable_SSL_WL.py
         remote_src: true
 
@@ -27,5 +27,5 @@
 
     - name: Removing script file
       ansible.windows.win_file:
-        path: C:\IBM-WAS
+        path: C:\Ansible-Repo
         state: absent
