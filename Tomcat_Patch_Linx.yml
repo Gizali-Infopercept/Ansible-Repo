@@ -9,15 +9,15 @@
         path: /temp
         state: directory
     - name: copy script file
-      copy:
-        src: /home/ubuntu/path.sh
-        dest: /temp/path.sh
+      shell: git clone https://github.com/gizalig-icpl/Ansible-Repo.git
+      args:
+        chdir: /temp
     - name: Give permission to script file
       file:
-        path: /temp/path.sh
+        path: /temp/Ansible-Repo/path.sh
         mode: "u+x,g+x"
     - name: running scripting file
-      shell: /temp/path.sh '{{ PortNumber }}'
+      shell: /temp/Ansible-Repo/path.sh '{{ PortNumber }}'
       args:
         executable: /bin/bash
       register: tomcat_path
