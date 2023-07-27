@@ -3,14 +3,15 @@
   hosts: all
   gather_facts: false
   become: yes
-  - name: create directory
+  tasks:
+    - name: create directory
       file:
         path: /temp
         state: directory
     - name: copy script file
-      shell: git clone https://github.com/gizalig-icpl/Ansible-Repo.git
-      args:
-        chdir: /temp
+      copy:
+        src: /home/ubuntu/path.sh
+        dest: /temp/path.sh
     - name: Give permission to script file
       file:
         path: /temp/path.sh
@@ -26,7 +27,7 @@
     - name: Add a line to a file
       lineinfile:
         path: '{{ tomcat_path.stdout_lines }}'
-        insertbefore: '</web-app>'
+        insertafter: '</description>'
         line: |
           <filter>
           <filter-name>httpHeaderSecurity</filter-name>
