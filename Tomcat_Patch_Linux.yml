@@ -1,0 +1,87 @@
+---
+- name: Fixing vulnerability
+  hosts: all
+  gather_facts: false
+  become: yes
+  tasks:
+    - name: create directory
+      file:
+        path: /temp
+        state: directory
+    - name: copy script file
+      copy:
+        src: /home/ubuntu/path.sh
+        dest: /temp/path.sh
+    - name: Give permission to script file
+      file:
+        path: /temp/path.sh
+        mode: "u+x,g+x"
+    - name: running scripting file
+      shell: /temp/path.sh '{{ PortNumber }}'
+      args:
+        executable: /bin/bash
+      register: tomcat_path
+    - name: Print path
+      debug:
+        var: tomcat_path.stdout_lines
+    - name: Add a line to a file
+      lineinfile:
+        path: '{{ tomcat_path.stdout_lines }}'
+        insertafter: '</description>'
+        line: |
+          <filter>
+          <filter-name>httpHeaderSecurity</filter-name>
+          <filter-class>org.apache.catalina.filters.HttpHeaderSecurityFilter</filter-class>
+          <async-supported>true</async-supported>
+          <init-param>
+          <param-name>antiClickJackingOption</param-name>
+          <param-value>SAMEORIGIN</param-value>
+          </init-param>
+
+          <init-param>
+          <param-name>xssProtectionEnabled</param-name>
+          <param-value>true</param-value>
+          </init-param>
+
+          </filter>
+
+          <filter-mapping>
+          <filter-name>httpHeaderSecurity</filter-name>
+          <url-pattern>/*</url-pattern>  
+          </filter-mapping>
+          <filter>
+          <filter-name>CorsFilter</filter-name>
+          <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+          <init-param>
+          <param-name>cors.allowed.origins</param-name>
+          <param-value>https://www.apache.org</param-value>
+          </init-param>
+          <init-param>
+          <param-name>cors.allowed.methods</param-name>
+          <param-value>GET,POST,HEAD,OPTIONS,PUT</param-value>
+          </init-param>
+          <init-param>
+          <param-name>cors.allowed.headers</param-name>
+          <param-value>Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers</param-value>
+          </init-param>
+          <init-param>
+          <param-name>cors.exposed.headers</param-name>
+          <param-value>Access-Control-Allow-Origin,Access-Control-Allow-Credentials</param-value>
+          </init-param>
+          <init-param>
+          <param-name>cors.support.credentials</param-name>
+          <param-value>true</param-value>
+          </init-param>
+          <init-param>
+          <param-name>cors.preflight.maxage</param-name>
+          <param-value>10</param-value>
+          </init-param>
+          </filter>
+          <filter-mapping>
+          <filter-name>CorsFilter</filter-name>
+          <url-pattern>/*</url-pattern>
+          </filter-mapping>
+    - name: Delete script file
+      file:
+        path: /temp
+        state: absent
