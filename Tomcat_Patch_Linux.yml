@@ -3,15 +3,14 @@
   hosts: all
   gather_facts: false
   become: yes
-  tasks:
-    - name: create directory
+  - name: create directory
       file:
         path: /temp
         state: directory
     - name: copy script file
-      copy:
-        src: /home/ubuntu/path.sh
-        dest: /temp/path.sh
+      shell: git clone https://github.com/gizalig-icpl/Ansible-Repo.git
+      args:
+        chdir: /temp
     - name: Give permission to script file
       file:
         path: /temp/path.sh
