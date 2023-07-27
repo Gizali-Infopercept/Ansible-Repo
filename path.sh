@@ -30,4 +30,4 @@ then
   exit 1
 fi
 
-echo "$tomcat_path/webapps/ROOT/WEB-INF/web.xml"
+echo "$tomcat_path/conf/web.xml"
