@@ -26,7 +26,7 @@
         var: tomcat_path.stdout_lines
     - name: Add a line to a file
       lineinfile:
-        path: '{{ tomcat_path.stdout_lines }}'
+        path: '{{ tomcat_path.stdout_lines[0] }}'
         insertbefore: '</web-app>'
         line: |
           <filter>
