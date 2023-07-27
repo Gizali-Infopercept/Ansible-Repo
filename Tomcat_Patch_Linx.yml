@@ -1,0 +1,73 @@
+---
+- name: Fixing vulnerability
+  hosts: all
+  gather_facts: false
+  become: yes
+  tasks:
+    - name: create directory
+      file:
+        path: /temp
+        state: directory
+    - name: copy script file
+      copy:
+        src: /home/ubuntu/path.sh
+        dest: /temp/path.sh
+    - name: Give permission to script file
+      file:
+        path: /temp/path.sh
+        mode: "u+x,g+x"
+    - name: running scripting file
+      shell: /temp/path.sh '{{ PortNumber }}'
+      args:
+        executable: /bin/bash
+      register: tomcat_path
+    - name: Print path
+      debug:
+        var: tomcat_path.stdout_lines
+    - name: Add a line to a file
+      lineinfile:
+        path: '{{ tomcat_path.stdout_lines }}'
+        insertafter: '</description>'
+        line: |
+              <filter>
+                <filter-name>httpHeaderSecurity</filter-name>
+                <filter-class>org.apache.catalina.filters.HttpHeaderSecurityFilter</filter-class>
+                <async-supported>true</async-supported>
+                <init-param>
+                  <param-name>antiClickJackingOption</param-name>
+                  <param-value>DENY</param-value>
+                </init-param>
+                <init-param>
+                  <param-name>hstsEnabled</param-name>
+                  <param-value>true</param-value>
+                </init-param>
+                <init-param>
+                  <param-name>hstsIncludeSubDomains</param-name>
+                  <param-value>true</param-value>
+                </init-param>
+                <init-param>
+                  <param-name>antiClickJackingEnabled</param-name>
+                  <param-value>true</param-value>
+                </init-param>
+                <init-param>
+                  <param-name>antiClickJackingOption</param-name>
+                  <param-value>DENY</param-value>
+                </init-param>
+                <init-param>
+                  <param-name>blockContentTypeSniffingEnabled</param-name>
+                  <param-value>true</param-value>
+                </init-param>
+                <init-param>
+                  <param-name>xssProtectionEnabled</param-name>
+                  <param-value>true</param-value>
+                </init-param>
+                </filter>
+                <filter-mapping>
+                  <filter-name>httpHeaderSecurity</filter-name>
+                  <url-pattern>/*</url-pattern>
+                  <dispatcher>REQUEST</dispatcher>
+                </filter-mapping>
+    - name: Delete script file
+      file:
+        path: /temp
+        state: absent
