@@ -108,7 +108,7 @@
 
     - name: getting startup file path
       command: |
-              "{{ restart_path.stdout }}startup.sh"
+              "{{ restart_path.stdout }}/startup.sh"
       become: true
 
     - name: Delete script file
