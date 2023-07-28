@@ -32,7 +32,7 @@
     - name: Add a line to a file
       lineinfile:
         path: '{{ tomcat_path.stdout_lines }}'
-        insertafter: '</description>'
+        insertbefore: '</web-app>'
         line: |
           <filter>
           <filter-name>httpHeaderSecurity</filter-name>
