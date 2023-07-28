@@ -29,7 +29,7 @@
       debug:
         var: tomcat_path.stdout_lines
 
-    - name: Add a line to a file
+    - name: Fixing vulnerabilities 
       lineinfile:
         path: '{{ tomcat_path.stdout_lines[0] }}'
         insertbefore: '</web-app>'
@@ -98,15 +98,16 @@
         executable: /bin/bash
       register: restart_path
 
-    - name: getting shutdown file path
+    - name: Stopping Tomcat
       command: |
               "{{ restart_path.stdout }}/shutdown.sh"
+      become: true
 
     - name: Wait for 10 seconds
       pause:
         seconds: 10
 
-    - name: getting startup file path
+    - name: Starting Tomcat
       command: |
               "{{ restart_path.stdout }}/startup.sh"
       become: true
