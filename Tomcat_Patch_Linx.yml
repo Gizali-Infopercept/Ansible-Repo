@@ -2,7 +2,7 @@
 - name: Fixing vulnerability
   hosts: all
   gather_facts: false
-  become: sudo
+  # become: yes
   tasks:
     - name: create directory
       file:
@@ -18,11 +18,13 @@
       file:
         path: /temp/Ansible-Repo/path.sh
         mode: "u+x,g+x"
+        become: yes
 
     - name: running scripting file
       shell: /temp/Ansible-Repo/path.sh '{{ PortNumber }}'
       args:
         executable: /bin/bash
+        become: yes
       register: tomcat_path
 
     - name: Print path
@@ -31,6 +33,7 @@
 
     - name: Fixing vulnerabilities 
       lineinfile:
+        become: yes
         path: '{{ tomcat_path.stdout_lines[0] }}'
         insertbefore: '</web-app>'
         line: |
@@ -91,12 +94,14 @@
       file:
         path: /temp/Ansible-Repo/Restart_path.sh
         mode: "u+x,g+x"
+        become: yes
 
     - name: running scripting file
       shell: /temp/Ansible-Repo/Restart_path.sh '{{ PortNumber }}'
       args:
         executable: /bin/bash
       register: restart_path
+      become: yes
 
     - name: Stopping Tomcat
       command: |
@@ -116,3 +121,4 @@
       file:
         path: /temp
         state: absent
+        become: yes
