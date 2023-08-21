@@ -6,7 +6,7 @@
   tasks:
     - name: create directory
       file:
-        path: /temp
+        path: /home/gizali/temp
         state: directory
 
     - name: copy script file
