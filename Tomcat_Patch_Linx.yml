@@ -21,7 +21,7 @@
         mode: "u+x,g+x"
 
     - name: running scripting file
-      shell: /home/gizali/temp/Ansible-Repo/path.sh '{{ PortNumber }}'
+      shell: sudo /home/gizali/temp/Ansible-Repo/path.sh '{{ PortNumber }}'
       args:
         executable: /bin/bash
       register: tomcat_path
