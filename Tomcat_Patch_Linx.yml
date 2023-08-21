@@ -8,6 +8,7 @@
       file:
         path: /temp
         state: directory
+      become_method: sudo
 
     - name: copy script file
       shell: git clone https://github.com/gizalig-icpl/Ansible-Repo.git
