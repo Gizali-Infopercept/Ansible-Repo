@@ -19,7 +19,6 @@
       file:
         path: /home/gizali/temp/Ansible-Repo/path.sh
         mode: "u+x,g+x"
-        become: true
 
     - name: running scripting file
       shell: /home/gizali/temp/Ansible-Repo/path.sh '{{ PortNumber }}'
@@ -93,19 +92,16 @@
       file:
         path: /home/gizali/temp/Ansible-Repo/Restart_path.sh
         mode: "u+x,g+x"
-        become: true
 
     - name: running scripting file
       shell: /home/gizali/temp/Ansible-Repo/Restart_path.sh '{{ PortNumber }}'
       args:
         executable: /bin/bash
       register: restart_path
-      become: true
 
     - name: Stopping Tomcat
       command: |
               "{{ restart_path.stdout }}/shutdown.sh"
-      become: true
 
     - name: Wait for 10 seconds
       pause:
@@ -114,10 +110,8 @@
     - name: Starting Tomcat
       command: |
               "{{ restart_path.stdout }}/startup.sh"
-      become: true
 
     - name: Delete script file
       file:
         path: /home/gizali/temp
         state: absent
-        become: yes
