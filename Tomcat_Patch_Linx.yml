@@ -21,7 +21,7 @@
         become: yes
 
     - name: running scripting file
-      shell: /temp/Ansible-Repo/path.sh '{{ PortNumber }}'
+      shell: /home/gizali/temp/Ansible-Repo/path.sh '{{ PortNumber }}'
       args:
         executable: /bin/bash
         become: yes
@@ -92,12 +92,12 @@
 
     - name: Give permission to script file
       file:
-        path: /temp/Ansible-Repo/Restart_path.sh
+        path: /home/gizali/temp/Ansible-Repo/Restart_path.sh
         mode: "u+x,g+x"
         become: yes
 
     - name: running scripting file
-      shell: /temp/Ansible-Repo/Restart_path.sh '{{ PortNumber }}'
+      shell: /home/gizali/temp/Ansible-Repo/Restart_path.sh '{{ PortNumber }}'
       args:
         executable: /bin/bash
       register: restart_path
