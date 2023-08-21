@@ -13,6 +13,7 @@
       shell: git clone https://github.com/gizalig-icpl/Ansible-Repo.git
       args:
         chdir: /home/gizali/temp
+        executable: /bin/bash
 
     - name: Give permission to script file
       file:
