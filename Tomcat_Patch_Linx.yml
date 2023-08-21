@@ -2,7 +2,7 @@
 - name: Fixing vulnerability
   hosts: all
   gather_facts: false
-  become: yes
+  become: sudo
   tasks:
     - name: create directory
       file:
