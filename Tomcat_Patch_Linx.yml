@@ -24,6 +24,7 @@
       shell: sudo /home/gizali/temp/Ansible-Repo/path.sh '{{ PortNumber }}'
       args:
         executable: /bin/bash
+      become: true
       register: tomcat_path
 
     - name: Print path
@@ -97,6 +98,7 @@
       shell: /home/gizali/temp/Ansible-Repo/Restart_path.sh '{{ PortNumber }}'
       args:
         executable: /bin/bash
+      become: true      
       register: restart_path
 
     - name: Stopping Tomcat
